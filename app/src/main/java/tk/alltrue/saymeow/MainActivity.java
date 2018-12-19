@@ -52,7 +52,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grid_main);
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            createOldSoundPool();
+        } else {
+            createNewSoundPool();
+        }
+
+        mAssetManager = getAssets();
+
+        mCatSound = loadSound("cat.ogg");
+        mChickenSound = loadSound("chicken.ogg");
+        mCowSound = loadSound("cow.ogg");
+        mDogSound = loadSound("dog.ogg");
+        mDuckSound = loadSound("duck.ogg");
+        mSheepSound = loadSound("sheep.ogg");
+
         ImageButton cowImageButton = (ImageButton) findViewById(R.id.imageButtonCow);
+        cowImageButton.setOnClickListener(onClickListener);
 
         ImageButton chickenImageButton = (ImageButton) findViewById(R.id.imageButtonChicken);
         chickenImageButton.setOnClickListener(onClickListener);
@@ -69,23 +85,14 @@ public class MainActivity extends AppCompatActivity {
         ImageButton dogImageButton = (ImageButton) findViewById(R.id.imageButtonDog);
         dogImageButton.setOnClickListener(onClickListener);
 
-        cowImageButton.setOnTouchListener(new View.OnTouchListener() {
+        mAssetManager = getAssets();
 
-            public boolean onTouch(View v, MotionEvent event) {
-                int eventAction = event.getAction();
-                if (eventAction == MotionEvent.ACTION_UP) {
-                    if (mStreamID > 0)
-                        mSoundPool.stop(mStreamID);
-                }
-                if (eventAction == MotionEvent.ACTION_DOWN) {
-                    mStreamID = playSound(mCowSound);
-                }
-                if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    mSoundPool.stop(mStreamID);
-                }
-                return true;
-            }
-        });
+        mCatSound = loadSound("cat.ogg");
+        mChickenSound = loadSound("chicken.ogg");
+        mCowSound = loadSound("cow.ogg");
+        mDogSound = loadSound("dog.ogg");
+        mDuckSound = loadSound("duck.ogg");
+        mSheepSound = loadSound("sheep.ogg");
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -123,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return mSoundPool.load(afd, 1);
     }
-
+/*
     @Override
     protected void onResume() {
         super.onResume();
@@ -150,5 +157,5 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         mSoundPool.release();
         mSoundPool = null;
-    }
+    }*/
 }
